@@ -16,20 +16,18 @@ def solve1(l: str) -> int:
                 mx = x
     return mx
 
-def solve2(l: str) -> int:
+def solve2(s: str) -> int:
     @ft.cache
-    def dp(i: int, ln: int) -> int:
-        if i < 0:
+    def dp(n: int, l: int) -> int:
+        if l == 0:
+            return 0
+        if n < l:
             return -10**100
-        if ln == 1:
-            return int(max(l[:i+1]))
-        res = max(
-            dp(i-1, ln),
-            dp(i-1, ln-1) * 10 + int(l[i])
+        return max(
+            dp(n-1, l),
+            dp(n-1, l-1) * 10 + int(s[n-1])
         )
-        return res
-    return dp(len(l)-1, 12)
-    
+    return dp(len(s), 12)
 
 with PuzzleContext(year=2025, day=3) as ctx:
     ans1, ans2 = 0, 0
