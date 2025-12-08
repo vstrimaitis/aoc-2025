@@ -55,27 +55,23 @@ with PuzzleContext(year=2025, day=8) as ctx:
     dsu = DSU(len(coords))
     edges = sorted(edges, key=lambda x: x[2])
     left = NEED
-    cont = -1
     for idx, (i, j, _) in enumerate(edges):
         if left == 0:
             break
         dsu.unite(i, j)
         left -= 1
-        cont = idx+1
 
     groups = sorted(dsu.groups(), key=lambda x: len(x), reverse=True)
+    
     ans1 = 1
     for g in groups[:3]:
         ans1 *= len(g)
-
     ctx.submit(1, str(ans1) if ans1 else None)
 
     ans2 = None
-    while len(dsu.groups()) > 1:
-        i, j, _ = edges[cont]
+    for idx, (i, j, _) in enumerate(edges):
         dsu.unite(i, j)
-        ans2 = coords[i][0] * coords[j][0]
-        cont += 1
-
-
+        if len(dsu.groups()) == 1:
+            ans2 = coords[i][0] * coords[j][0]
+            break
     ctx.submit(2, str(ans2) if ans2 else None)
